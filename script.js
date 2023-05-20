@@ -1,22 +1,28 @@
 var canv = document.getElementById("canv");
 var ctx = canv.getContext("2d");
 var scaleSlider = document.getElementById("scaleSlider");
+var fxInput = document.getElementById("fxInput");
 
 var w = canv.width;
 var h = canv.height;
 var scale = scaleSlider.value;
 
+var fx = fxInput.value;
+
 window.onload = function()
 {
-    drawGraph();
+    drawGraph(fx);
 }
 
-function drawGraph()
+function drawGraph(fx)
 {
+    //setup, grid
     unitw = w/scale;
     unith = h/scale;
-    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "black";
     ctx.font = 250/scale+"px Arial";
+    ctx.clearRect(0,0,w,h);
     for(let i=0; i<scale; i++)
     {
         ctx.fillText(scale/2-i, scale/2*unitw+5, i*unith-5);
@@ -30,10 +36,25 @@ function drawGraph()
         ctx.lineTo(w, unith*i);
         ctx.stroke();
     }
+
+    //graph
+    ctx.fillStyle = "green";
+    ctx.lineWidth = 2;
+    for(let x=-(scale/2); x<scale/2; x+=0.01)
+    {
+        y = eval(fx);
+        ctx.fillRect((x+scale/2)*unitw,(-y+scale/2)*unith, 2, 2);
+    }
 }
 
 scaleSlider.oninput = function()
 {
     scale = scaleSlider.value;
-    drawGraph();
+    drawGraph(fx);
+}
+
+fxInput.oninput = function()
+{
+    fx = fxInput.value;
+    drawGraph(fx);
 }
