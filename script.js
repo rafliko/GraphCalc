@@ -38,9 +38,9 @@ function drawGraph(fx)
     }
 
     //graph
-    ctx.fillStyle = "green";
+    ctx.fillStyle = "red";
     ctx.lineWidth = 2;
-    for(let x=-(scale/2); x<scale/2; x+=0.01)
+    for(let x=-(scale/2); x<scale/2; x+=0.001)
     {
         y = eval(fx);
         ctx.fillRect((x+scale/2)*unitw,(-y+scale/2)*unith, 2, 2);
