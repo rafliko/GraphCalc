@@ -108,3 +108,17 @@ function addFx()
 
     updateGraph();
 }
+
+function remFx()
+{
+    if(fx.length>1)
+    {
+        fx.pop();
+        fxColor.pop();
+        fxSpan.removeChild(fxSpan.lastChild);
+        fxSpan.removeChild(fxSpan.lastChild);
+        fxSpan.removeChild(fxSpan.lastChild);
+    }
+
+    updateGraph();
+}
