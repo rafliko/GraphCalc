@@ -8,11 +8,22 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas width="800px" height="800px" id="canv"></canvas>
-    <br>
-    <label>Scale: </label><input type="range" id="scaleSlider" min="4" max="50" step="2" value="10">
-    <br>
-    <label>Function: </label><input type="text" id="fxInput" value="Math.sin(x)">
+    <div>
+        <canvas width="800px" height="800px" id="canv"></canvas>
+    </div>
+    <div>
+        <label>Scale: </label><input type="range" oninput="scaleChange(this.value)" min="4" max="50" step="2" value="10"><br><br>
+
+        <span id="fxSpan">
+            <label>Function 0: </label><input type="text" oninput="fxChange(0,this.value)" value="sin(x)" style="color:red;"><br>
+        </span>
+        <button onclick="addFx()">Add Function</button><br><br>
+
+        <span id="varSpan">
+            <label>a: </label><input type="number" oninput="varChange('a',this.value)" value="1"><br>
+            <label>b: </label><input type="number" oninput="varChange('b',this.value)" value="1"><br>
+        </span>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

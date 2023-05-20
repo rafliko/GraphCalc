@@ -1,22 +1,26 @@
 var canv = document.getElementById("canv");
 var ctx = canv.getContext("2d");
-var scaleSlider = document.getElementById("scaleSlider");
-var fxInput = document.getElementById("fxInput");
+
+var fxSpan = document.getElementById("fxSpan");
 
 var w = canv.width;
 var h = canv.height;
-var scale = scaleSlider.value;
+var scale = 10;
+var fx = new Array();
+var fxColor = new Array();
 
-var fx = fxInput.value;
+var a = 1;
+var b = 1;
 
 window.onload = function()
 {
-    drawGraph(fx);
+    fx[0] = "sin(x)";
+    fxColor[0] = "red";
+    updateGraph();
 }
 
-function drawGraph(fx)
+function setupGraph()
 {
-    //setup, grid
     unitw = w/scale;
     unith = h/scale;
     ctx.fillStyle = "black";
@@ -36,25 +40,71 @@ function drawGraph(fx)
         ctx.lineTo(w, unith*i);
         ctx.stroke();
     }
+}
 
-    //graph
-    ctx.fillStyle = "red";
+function drawGraph(fxindex)
+{
+    ctx.fillStyle = fxColor[fxindex];
     ctx.lineWidth = 2;
-    for(let x=-(scale/2); x<scale/2; x+=0.001)
+    for(let x=-(scale/2); x<scale/2; x+=0.002)
     {
-        y = eval(fx);
+        with(Math) y = eval(fx[fxindex]);
         ctx.fillRect((x+scale/2)*unitw,(-y+scale/2)*unith, 2, 2);
     }
 }
 
-scaleSlider.oninput = function()
+function updateGraph()
 {
-    scale = scaleSlider.value;
-    drawGraph(fx);
+    setupGraph();
+    for(let i=0; i<fx.length; i++)
+    {
+        try 
+        {
+            drawGraph(i);
+        }
+        catch
+        {
+            continue;
+        }
+    }
 }
 
-fxInput.oninput = function()
+function scaleChange(val)
 {
-    fx = fxInput.value;
-    drawGraph(fx);
+    scale = val;
+    updateGraph();
+}
+
+function fxChange(index, val)
+{
+    fx[index] = val;
+    updateGraph();
+}
+
+function varChange(index, val)
+{
+    eval(index+"="+val);
+    updateGraph();
+}
+
+function addFx()
+{
+    fx.push("sin(x)");
+    fxColor.push("rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")");
+
+    newFxLabel = document.createElement("label");
+    newFxLabel.innerHTML = "Function "+(fx.length-1)+": ";
+    fxSpan.appendChild(newFxLabel);
+
+    newFxInput = document.createElement("input");
+    newFxInput.setAttribute("type","text");
+    newFxInput.setAttribute("oninput","fxChange("+(fx.length-1)+",this.value)");
+    newFxInput.setAttribute("value","sin(x)");
+    newFxInput.setAttribute("style","color:"+fxColor[fx.length-1]+";");
+    fxSpan.appendChild(newFxInput);
+
+    newFxBr = document.createElement("br");
+    fxSpan.appendChild(newFxBr);
+
+    updateGraph();
 }
