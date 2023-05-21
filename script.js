@@ -42,31 +42,30 @@ function setupGraph()
     }
 }
 
-function drawGraph(fxindex)
+function drawGraph()
 {
-    ctx.fillStyle = fxColor[fxindex];
-    ctx.lineWidth = 2;
-    for(let x=-(scale/2); x<scale/2; x+=0.002)
-    {
-        with(Math) y = eval(fx[fxindex]);
-        ctx.fillRect((x+scale/2)*unitw,(-y+scale/2)*unith, 2, 2);
-    }
-}
-
-function updateGraph()
-{
-    setupGraph();
     for(let i=0; i<fx.length; i++)
     {
         try 
         {
-            drawGraph(i);
+            ctx.fillStyle = fxColor[i];
+            for(let x=-(scale/2); x<scale/2; x+=0.0001*scale)
+            {
+                with(Math) y = eval(fx[i]);
+                ctx.fillRect((x+scale/2)*unitw,(-y+scale/2)*unith, 2, 2);
+            }
         }
         catch
         {
             continue;
         }
     }
+}
+
+function updateGraph()
+{
+    setupGraph();
+    drawGraph();
 }
 
 function scaleChange(val)
